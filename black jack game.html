@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blakc Jack Game</title>
+</head>
+<style>
+    * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    body {
+        background: url(jack.jpg);
+        background-position: cover;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        justify-content: space-evenly;
+    }
+
+    h2 {
+        font-size: 3rem;
+        color: goldenrod;
+    }
+
+    #card,
+    #sum {
+        font-size: 2rem;
+    }
+
+    button {
+        display: block;
+        height: 50px;
+        width: 200px;
+        background-color: goldenrod;
+        font-size: 1.3rem;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    }
+
+    #message,#playerinfo {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    button:hover {
+        box-shadow: 10px 10px 2px 3px rgba(0, 0, 0, 0.4);
+    }
+</style>
+
+<body>
+    <h2>Black Jack</h2>
+    <p id="message"></p>
+    <p id="card">Cards:</p>
+    <p id="sum">Sum:</p>
+    <button id="start" onclick="startGame()">START GAME</button>
+    <button id="new" onclick="newCard()">NEW CARD</button>
+    <p id="playerinfo"></p>
+
+</body>
+<script>
+    function randomCard() {
+        let random = Math.floor(Math.random() * 13) + 1;
+        if (random === 1) {
+            return 11;
+        }
+        else if (random > 10) {
+            return 10;
+        }
+        else {
+            return random;
+        }
+    }
+    let playerinfo={
+        name:"Arjun",
+        chips:500
+    }
+    let hasBlackJack=false;
+    let cards=[];
+    let sum=0;
+    let isAlive=false;
+    let message = " ";
+
+    function startGame() {
+        let card1 = randomCard();
+        let card2 = randomCard();
+         cards = [card1, card2];
+         sum = card1 + card2;
+        isAlive=true;
+        document.getElementById('playerinfo').innerText=playerinfo.name+" : $"+playerinfo.chips
+        renderGame();
+    }
+    function renderGame() {
+        document.getElementById('card').textContent = "Cards: ";
+        for (let i = 0; i < cards.length; i++) {
+            document.getElementById('card').textContent += cards[i] + " ";
+        }
+        document.getElementById('sum').textContent = "Sum :" + " " + sum;
+        if (sum === 21) {
+            message = "You've got a Black Jack";
+            hasBlackJack=true;
+        }
+        else if (sum > 21) {
+            message = "You're out of the game";
+            isAlive=false;
+        }
+        else {
+            message = "Do you want to draw a new card ?";
+            isAlive=true;
+        }
+        console.log(message);
+        document.getElementById('message').innerHTML = message;
+    }
+
+    function newCard() {
+        if (isAlive===true && hasBlackJack==false)
+        {
+            let card3 = randomCard();
+        sum += card3;
+        cards.push(card3);
+        console.log(cards);
+        renderGame();
+        }
+        else
+        {
+            console.log("Game Over");
+        }
+    }
+</script>
+
+</html>
